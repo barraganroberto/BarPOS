@@ -17,15 +17,17 @@ import { errorHandler, notFound } from "./middleware/error.js";
 dotenv.config();
 
 const app = express();
+const FRONTEND_URL = process.env.CLIENT_URL;
 
 // Enable CORS and parse JSON
 app.use(
     cors({
-        origin: "https://elgranado-barpos.onrender.com",
-        credentials: true,
+        origin: FRONTEND_URL, // now matches your real frontend domain
+        credentials: true, // allow cookies/auth headers
+        methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+        allowedHeaders: ["Content-Type", "Authorization"],
     })
 );
-// app.options("*", cors());
 app.use(express.json());
 
 // Connect to MongoDB
