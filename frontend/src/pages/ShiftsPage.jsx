@@ -97,21 +97,21 @@ function ShiftRow({ shift, isOpen, onOpenChange }) {
         cashCounted = 0,
         cardCounted = 0,
         discrepancyNotes,
-        user,
         endTime,
         startTime,
     } = shift
+
+    const user = shift.user ||{ firstName: '', lastName: '' }
 
     const formatted = useMemo(() => {
         const date = new Date(endTime ?? startTime)
         return date.toLocaleString('en-US', {
             day: '2-digit',
             month: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
         })
     }, [endTime, startTime])
-    const name = `${user.firstName} ${user.lastName || ''}`.trim()
+
+    const name = `${user.firstName} ${user.lastName}`
 
     return (
         <Dialog open={isOpen} onOpenChange={onOpenChange}>

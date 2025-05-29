@@ -3,6 +3,7 @@ import {
     Calendar,
     DollarSign,
     LayoutDashboard,
+    Milk,
     ShoppingCart,
     Users,
 } from 'lucide-react'
@@ -100,6 +101,16 @@ export default function NavMenu() {
                             >
                                 <Calendar className="size-4" />
                                 <span>Shifts</span>
+                            </NavLink>
+                        </DropdownMenuItem>
+
+                        <DropdownMenuItem asChild>
+                            <NavLink
+                                to="/products"
+                                className="hover:bg-muted/10 flex items-center space-x-2 rounded-sm px-3 py-1"
+                            >
+                                <Milk className="size-4" />
+                                <span>Products</span>
                             </NavLink>
                         </DropdownMenuItem>
                     </>

@@ -28,8 +28,7 @@ export const closeShift = asyncHandler(async (req, res) => {
     }
 
     // Compute the expected totals before closing the shift
-    const allSales = await Sale.find({ shift: shift._id });
-    shift.sales = allSales.map((sale) => sale._id);
+    const allSales = await Sale.find({ shift: shift._id }).populate("items.product");
 
     const { cashCounted, cardCounted, discrepancyNotes } = req.body;
     const expected = await shift.getPaymentTotals();
@@ -42,7 +41,7 @@ export const closeShift = asyncHandler(async (req, res) => {
     shift.endTime = Date.now();
 
     const updated = await shift.save();
-    res.json(updated);
+    res.json({updated, allSales});
 });
 
 // @desc    Get all shifts

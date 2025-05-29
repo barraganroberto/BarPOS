@@ -9,9 +9,14 @@ import AdminRoute from './components/AdminRoute'
 import UsersPage from './pages/UsersPage'
 import ProfilePage from './pages/ProfilePage'
 import ShiftsPage from './pages/ShiftsPage'
+import ProductsPage from './pages/ProductsPage'
+import TestPage from './TestPage'
+import { Toaster } from 'sonner'
 
 export default function App() {
     return (
+        <>
+        <Toaster position='bottom-center' />
         <Routes>
             {/* Public routes */}
             <Route path="/login" element={<LoginPage />} />
@@ -29,7 +34,9 @@ export default function App() {
                     {/* Admin routes */}
                     <Route element={<AdminRoute />}>
                         <Route path="users" element={<UsersPage />} />
+                        <Route path="products" element={<ProductsPage />} />
                         <Route path="shifts" element={<ShiftsPage />} />
+                        <Route path="test" element={<TestPage />} />
                     </Route>
                 </Route>
             </Route>
@@ -37,5 +44,6 @@ export default function App() {
             {/* Fallback */}
             <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
+        </>
     )
 }

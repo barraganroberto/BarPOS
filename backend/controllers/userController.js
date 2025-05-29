@@ -126,3 +126,16 @@ export const updatePassword = asyncHandler(async (req, res) => {
     const updatedUser = await user.save();
     res.status(200).json({ message: "Password updated" });
 });
+
+// @desc    Delete user (admin only)
+// @route   DELETE /api/users/:id
+// @access  Admin
+export const deleteUser = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+        res.status(404);
+        throw new Error("User not found");
+    }
+    await user.deleteOne();
+    res.status(200).json({ message: "User deleted" });
+});

@@ -24,6 +24,12 @@ export async function updateUser({ id, role }) {
     return res.data
 }
 
+// DELETE /api/users/:id (admin only)
+export async function deleteUser(id) {
+    const res = await client.delete(`/users/${id}`)
+    return res.data
+}
+
 // GET /api/users/profile (private)
 export async function getUserProfile() {
     const res = await client.get('/users/profile')

@@ -8,6 +8,7 @@ import {
     createUser,
     getUserProfile,
     getUserById,
+    deleteUser,
 } from "../controllers/userController.js";
 import { validate } from "../middleware/validate.js";
 import { protect, admin } from "../middleware/auth.js";
@@ -54,6 +55,16 @@ router.put(
     updateUser
 );
 
+// @desc    Delete user (admin only)
+router.delete(
+    "/:id",
+    protect,
+    admin,
+    [param("id").isMongoId()],
+    validate,
+    deleteUser
+);
+
 // @desc    Update user profile
 router.patch(
     "/profile",
@@ -72,7 +83,11 @@ router.patch(
 router.patch(
     "/password",
     protect,
-    [body("newPassword").isLength({ min: 6 }).withMessage("Password must be at least 6 characters")],
+    [
+        body("newPassword")
+            .isLength({ min: 6 })
+            .withMessage("Password must be at least 6 characters"),
+    ],
     validate,
     updatePassword
 );

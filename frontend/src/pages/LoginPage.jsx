@@ -1,4 +1,4 @@
-import { Navigate, useNavigate } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { useState } from 'react'
 import { toast } from 'sonner'
@@ -8,26 +8,25 @@ import { Input } from '../components/ui/input'
 import { Button } from '../components/ui/button'
 
 export default function LoginPage() {
-    const { user, signIn } = useAuth()
-    const navigate = useNavigate()
+    const { user, signIn, authLoading } = useAuth()
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-    const [loading, setLoading] = useState(false)
 
     // If already logged in, redirect to POS
     if (user) {
-        return <Navigate to="/pos" replace />
+        return <Navigate to="/shift" replace />
     }
 
-    const handleSubit = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        setLoading(true)
         try {
             await signIn({ username, password })
         } catch (error) {
-            toast.error(error.message || 'Error logging in')
-        } finally {
-            setLoading(false)
+            toast.error(
+                error.response?.data?.message ||
+                    error.message ||
+                    'Error logging in'
+            )
         }
     }
 
@@ -38,7 +37,7 @@ export default function LoginPage() {
                     <CardTitle>BarPOS Login</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <form onSubmit={handleSubit} className="space-y-4">
+                    <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="space-y-1">
                             <Label htmlFor="username">Username</Label>
                             <Input
@@ -46,7 +45,7 @@ export default function LoginPage() {
                                 type="text"
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
-                                disabled={loading}
+                                disabled={authLoading}
                             />
                         </div>
                         <div className="space-y-1">
@@ -56,15 +55,15 @@ export default function LoginPage() {
                                 type="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                disabled={loading}
+                                disabled={authLoading}
                             />
                         </div>
                         <Button
                             type="submit"
                             className="w-full"
-                            disabled={loading}
+                            disabled={authLoading}
                         >
-                            {loading ? 'Loading...' : 'Login'}
+                            {authLoading ? 'Loading...' : 'Login'}
                         </Button>
                     </form>
                 </CardContent>

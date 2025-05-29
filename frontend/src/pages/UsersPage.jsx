@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useCreateUser, useUpdateUser, useUsers } from '../hooks/useUsers'
+import { useCreateUser, useDeleteUser, useUpdateUser, useUsers } from '../hooks/useUsers'
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 import { Label } from '../components/ui/label'
 import { Input } from '../components/ui/input'
@@ -16,11 +16,15 @@ import {
     DialogTrigger,
 } from '../components/ui/dialog'
 import { DialogContent } from '@radix-ui/react-dialog'
+import { AlertDialog } from '@radix-ui/react-alert-dialog'
+import { AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/ui/alert-dialog'
+import { Trash2 } from 'lucide-react'
 
 export default function UsersPage() {
     const { data: users = [], isLoading, isError, error } = useUsers()
     const createUser = useCreateUser()
     const updateUserRole = useUpdateUser()
+    const deleteUser = useDeleteUser()
 
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
@@ -43,6 +47,12 @@ export default function UsersPage() {
                 },
             }
         )
+    }
+
+    // Delete user
+    const handleDelete = async () => {
+        await deleteUser.mutateAsync(editingUserId)
+        setEditingUserId(null)
     }
 
     if (isLoading) return <p className="p-4 text-center">Loading...</p>
@@ -171,6 +181,27 @@ export default function UsersPage() {
                                             ? 'Updating...'
                                             : 'Update Role'}
                                     </Button>
+
+                                    <AlertDialog>
+                                        <AlertDialogTrigger asChild>
+                                            <Button variant="destructive">
+                                                <Trash2 className='size-4' />
+                                                Delete user
+                                            </Button>
+                                        </AlertDialogTrigger>
+                                        <AlertDialogContent>
+                                            <AlertDialogHeader>
+                                                <AlertDialogTitle>¿Delete this user?</AlertDialogTitle>
+                                                <AlertDialogDescription>This action can't be undone!</AlertDialogDescription>
+                                            </AlertDialogHeader>
+                                            <AlertDialogFooter className="flex justify-end space-x-2">
+                                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                <AlertDialogAction onClick={handleDelete} className="bg-destructive hover:bg-destructive/90">Delete</AlertDialogAction>
+
+                                            </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                    </AlertDialog>
+
                                 </DialogFooter>
                             </DialogContent>
                         </Dialog>
