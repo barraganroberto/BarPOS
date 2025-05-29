@@ -17,20 +17,29 @@ import { errorHandler, notFound } from "./middleware/error.js";
 dotenv.config();
 
 const app = express();
+const CLIENT_URL = process.env.CLIENT_URL;
 
 // Enable CORS and parse JSON
-app.use(cors({ origin: ["http://192.168.1.133:5173", "http://localhost:5173"], credentials: true }));
+// app.use(cors({ origin: ["http://192.168.1.133:5173", "http://localhost:5173"], credentials: true }));
+app.use(
+    cors({
+        origin: CLIENT_URL, // only allow your front-end host
+        credentials: true, // allow cookies/credentials
+        methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+        allowedHeaders: ["Content-Type", "Authorization"],
+    })
+);
 app.use(express.json());
 
 // Connect to MongoDB
 connectDB();
 
 // Routes
-app.use("/api/auth", authRoutes);           // Login
-app.use("/api/users", userRoutes);          // User CRUD & profile
-app.use("/api/products", productRoutes);    // Product CRUD
-app.use("/api/sales", saleRoutes);          // Sale CRUD
-app.use("/api/shifts", shiftRoutes);        // Shift CRUD
+app.use("/api/auth", authRoutes); // Login
+app.use("/api/users", userRoutes); // User CRUD & profile
+app.use("/api/products", productRoutes); // Product CRUD
+app.use("/api/sales", saleRoutes); // Sale CRUD
+app.use("/api/shifts", shiftRoutes); // Shift CRUD
 
 app.get("/", (req, res) => res.send("API running"));
 

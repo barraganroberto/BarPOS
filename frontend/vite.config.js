@@ -1,14 +1,15 @@
 import path from 'path'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
-import { defineConfig, loadEnv } from 'vite'
+import { defineConfig } from 'vite'
 
-export default defineConfig(({ mode }) => {
+export default defineConfig(() => {
     // 1) load all VITE_* env vars into `env`
-    const env = loadEnv(mode, process.cwd())
+    // const env = loadEnv(mode, process.cwd())
 
     // 2) pick your API URL (fall back to localhost:8000 in dev)
-    const API_URL = env.VITE_API_URL || "http://localhost:8000";
+    // const API_URL = env.VITE_API_URL || "http://localhost:8000";
+    const API_URL = 'http://localhost:8000'
 
     return {
         plugins: [react(), tailwindcss()],
