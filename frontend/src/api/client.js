@@ -1,7 +1,8 @@
 import axios from 'axios'
 
-const isDev = import.meta.env.DEV
-const baseURL = isDev ? '/api' : import.meta.env.VITE_API_URL + '/api'
+const baseURL = import.meta.env.VITE_API_URL
+    ? `${import.meta.env.VITE_API_URL}/api`
+    : '/api'
 
 const client = axios.create({
     // baseURL: "http://192.168.1.133:8000/api",

@@ -17,12 +17,18 @@ import { errorHandler, notFound } from "./middleware/error.js";
 dotenv.config();
 
 const app = express();
-const FRONTEND_URL = process.env.CLIENT_URL;
+const PROD_ORIGIN = process.env.CLIENT_URL;
+const DEV_ORIGINS = [
+    'http://localhost:5173',
+    'http://192.168.1.133:5173',
+]
+const whitelist = [PROD_ORIGIN, ...DEV_ORIGINS];
+
 
 // Enable CORS and parse JSON
 app.use(
     cors({
-        origin: FRONTEND_URL, // now matches your real frontend domain
+        origin: whitelist, // now matches your real frontend domain
         credentials: true, // allow cookies/auth headers
         methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
         allowedHeaders: ["Content-Type", "Authorization"],
